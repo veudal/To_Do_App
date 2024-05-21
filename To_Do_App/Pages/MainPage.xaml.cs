@@ -23,6 +23,7 @@ namespace To_Do_App
 
     public partial class MainPage : Page
     {
+        List<TaskItem> taskItems = new List<TaskItem>();
         Timer timer;
 
         public MainPage()
@@ -37,23 +38,24 @@ namespace To_Do_App
 
             if (navigatedPage is MainPage)
             {
-                FilterTasks();
+                FilterTasks(SearchBox.Text);
                 TaskList.Items.Refresh();
             }
         }
 
         private void FilterOption_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            FilterTasks();
+            FilterTasks(SearchBox.Text);
         }
 
-        private void FilterTasks()
+        private void FilterTasks(string text)
         {
-            List<TaskItem> list;
-            if (string.IsNullOrEmpty(SearchBox.Text))
-                list = TaskController.GetTaskItems();
-            else
-                list = TaskController.GetTasksByKeyword(SearchBox.Text);
+            List<TaskItem> list = FilterByKeyword(taskItems, text);
+            if (list == null)
+            {
+                MessageBox.Show("Unable to retrieve data from API.");
+                return;
+            }
 
             string selectedItem = (string)((ComboBoxItem)FilterOption.SelectedItem).Content;
 
@@ -97,7 +99,6 @@ namespace To_Do_App
                         list.RemoveAt(i);
                 }
             }
-
             TaskList.ItemsSource = list;
         }
 
@@ -150,8 +151,7 @@ namespace To_Do_App
             var text = ((TextBox)sender).Text;
             if (string.IsNullOrEmpty(SearchBox.Text))
             {
-                TaskList.ItemsSource = TaskController.GetTaskItems();
-                FilterTasks();
+                FilterTasks(SearchBox.Text);
             }
             else
             {
@@ -163,28 +163,14 @@ namespace To_Do_App
         {
             Dispatcher.BeginInvoke(new Action(() =>
             {
-                TaskList.ItemsSource = TaskController.GetTasksByKeyword((string)text);
-                FilterTasks();
+                FilterTasks((string)text);
             }));
         }
 
-        private void SearchBox_KeyDown(object sender, KeyEventArgs e)
+        private List<TaskItem> FilterByKeyword(List<TaskItem> list, string keyword)
         {
-           if(e.Key == Key.Enter)
-           {
-                if (timer != null)
-                    timer.Dispose();
-
-                if (string.IsNullOrEmpty(SearchBox.Text))
-                {
-                    TaskList.ItemsSource = TaskController.GetTaskItems();
-                }
-                else
-                {
-                    TaskList.ItemsSource = TaskController.GetTasksByKeyword(SearchBox.Text);
-                }
-                FilterTasks();
-            }
+            keyword = keyword.ToLower();
+            return list.FindAll(t => t.Content.ToLower().Contains(keyword));
         }
 
         private void CreateButton_Click(object sender, RoutedEventArgs e)
@@ -195,8 +181,14 @@ namespace To_Do_App
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            TaskList.ItemsSource = TaskController.GetTaskItems();
+            RefreshButton_Click(sender, e);
             NavigationService.Navigated += NavigationService_Navigated;
+        }
+
+        private void RefreshButton_Click(object sender, RoutedEventArgs e)
+        {
+            taskItems = TaskController.GetTaskItems();
+            FilterTasks(SearchBox.Text);
         }
     }
 }

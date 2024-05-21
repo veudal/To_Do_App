@@ -85,7 +85,7 @@
             <TextBlock Text="To-Do List" TextAlignment="Left" FontSize="35" Foreground="White"/>
         </Viewbox>
 
-        <ComboBox x:Name="FilterOption"  Grid.Row="1" Grid.RowSpan="2" Grid.Column="10"  Grid.ColumnSpan="4" IsEditable="False" FontSize="18" FontWeight="SemiBold" Foreground="White" Background="Transparent" HorizontalContentAlignment="Center" VerticalAlignment="Bottom" VerticalContentAlignment="Center" SelectionChanged="FilterOption_SelectionChanged">
+        <ComboBox x:Name="FilterOption"  Grid.Row="1" Grid.RowSpan="2" Grid.Column="11"  Grid.ColumnSpan="4" IsEditable="False" FontSize="18" FontWeight="SemiBold" Foreground="White" Background="Transparent" HorizontalContentAlignment="Center" VerticalAlignment="Bottom" VerticalContentAlignment="Center" SelectionChanged="FilterOption_SelectionChanged">
             <ComboBoxItem Content="All tasks"/>
             <ComboBoxItem Content="Complete tasks"/>
             <ComboBoxItem Content="Incomplete tasks"/>
@@ -93,7 +93,7 @@
             <ComboBoxItem Content="Unflagged tasks"/>
             <ComboBoxItem Content="With due date"/>
         </ComboBox>
-        <TextBox x:Name="SearchBox" Foreground="White" VerticalAlignment="Bottom" FontSize="20" VerticalContentAlignment="Bottom" Grid.Column="16" Grid.ColumnSpan="3" Grid.Row="0" Grid.RowSpan="3" materialDesign:HintAssist.Hint="Search" Style="{StaticResource MaterialDesignFloatingHintTextBox}" TextChanged="SearchBox_TextChanged" KeyDown="SearchBox_KeyDown"/>
+        <TextBox x:Name="SearchBox" Foreground="White" VerticalAlignment="Bottom" FontSize="20" VerticalContentAlignment="Bottom" Grid.Column="16" Grid.ColumnSpan="3" Grid.Row="0" Grid.RowSpan="3" materialDesign:HintAssist.Hint="Search" Style="{StaticResource MaterialDesignFloatingHintTextBox}" TextChanged="SearchBox_TextChanged"/>
 
         <Grid Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="18" Grid.RowSpan="2" MaxHeight="60">
             <Grid.ColumnDefinitions>
@@ -182,6 +182,9 @@
         </ScrollViewer>
         <Viewbox Grid.Column="5" Grid.Row="1" Grid.RowSpan="2" Grid.ColumnSpan="3" Stretch="Uniform">
             <Button x:Name="CreateButton" Content="New task" BorderThickness="0" Click="CreateButton_Click"/>
+        </Viewbox>
+        <Viewbox Grid.Column="8" Grid.Row="1" Grid.RowSpan="2" Grid.ColumnSpan="3" Stretch="Uniform">
+            <Button x:Name="RefreshButton" Content="↻" BorderThickness="0" Click="RefreshButton_Click"/>
         </Viewbox>
     </Grid>
 </Page>

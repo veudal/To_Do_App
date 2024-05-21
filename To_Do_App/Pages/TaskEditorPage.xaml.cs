@@ -64,6 +64,7 @@ namespace To_Do_App.Pages
                 TaskItem taskItem = new TaskItem
                 {
                     Content = ContentBox.Text,
+                    Completed = (bool)CompleteStatus.IsChecked,
                     Flagged = (bool)FlagStatus.IsChecked,
                     DueDate = dateOnly
                 };
